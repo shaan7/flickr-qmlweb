@@ -1,64 +1,76 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import QtQuick.XmlListModel 2.0
 import QtQuick.Layouts 1.1
 import "http://qmlweb.shaan7.info/qmlweb" as QmlWeb
 
-Item {
-    ListView {
-        id: theList
+ColumnLayout {
+    Image {
+        Layout.alignment: Qt.AlignHCenter
+        source: 'http://iconizer.net/files/Sketchy_Social_Media_icons/orig/Flickr-logo.png'
+    }
 
-        anchors { fill: parent; margins: 10 }
-        spacing: 5
-        header: Label { text: theList.count + " items" }
-        delegate: RowLayout {
-            id: delegateRow
-            Image {
-                property string url_without_size: "http://farm" + farm + ".static.flickr.com/" + server + "/" + id + "_" + secret
-                source: url_without_size + (delegateRow.ListView.isCurrentItem ? ".jpg" : "_s.jpg")
-                scale: delegateRow.ListView.isCurrentItem && status == Image.Ready ?  1.2 : 1
-                opacity: delegateRow.ListView.isCurrentItem ? 1 : 0.4
-                z: delegateRow.ListView.isCurrentItem ? 2 : 0
+    Item {
+        Layout.fillWidth: true; Layout.fillHeight: true
+        clip: true
+        ListView {
+            id: theList
+            anchors.centerIn: parent
+            height: parent.height
+            width: parent.width * 0.7
 
-                ProgressBar {
-                        anchors.fill: parent
-                        visible: value != 1
-                        value: parent.progress
-                }
+            delegate: RowLayout {
+                property alias fullImageUrl: thumbnail.fullImageUrl
+                width: parent.width
 
-                MouseArea {
-                    anchors.fill: parent
+                Thumbnail {
+                    id: thumbnail
+                    isCurrentItem: parent.ListView.isCurrentItem
+                    progress: isCurrentItem ? fullScreenImage.progress : 1
                     onClicked: theList.currentIndex = index
                 }
 
-                Behavior on scale {
-                        NumberAnimation { duration: 100 }
-                }
-                Behavior on opacity {
-                        NumberAnimation { duration: 100 }
+                Label {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pointSize: 12; text: title
+                    wrapMode: Text.WordWrap
+                    verticalAlignment: Text.AlignVCenter
                 }
             }
 
-            Label {
-                font.pointSize: 16
-                text: title
-            }
+            model: FlickrModel {}
+
+            onCurrentIndexChanged: fullScrenImageRect.visible = true
         }
 
-        model: XmlListModel {
-            source: "https://api.flickr.com/services/rest/?" +
-                    "method=flickr.photos.getRecent&" +
-                    "per_page=30&" +
-                    "sort=date-taken-desc&" +
-                    "api_key=e36784df8a03fea04c22ed93318b291c"
-            query: "/rsp/photos/photo"
+        Rectangle {
+            id: fullScrenImageRect
+            anchors.centerIn: parent; color: 'black'
 
-            XmlRole { name: "title"; query: "@title/string()" }
-            XmlRole { name: "datetaken"; query: "@datetaken/string()" }
-            XmlRole { name: "farm"; query: "@farm/string()" }
-            XmlRole { name: "server"; query: "@server/string()" }
-            XmlRole { name: "id"; query: "@id/string()" }
-            XmlRole { name: "secret"; query: "@secret/string()" }
+            width: visible && fullScreenImage.ready ? parent.width : 0
+            height: visible && fullScreenImage.ready ? parent.height : 0
+
+            Image {
+                id: fullScreenImage
+                property bool ready: status === Image.Ready
+                anchors.fill: parent
+
+                fillMode: Image.PreserveAspectFit
+                source: visible && theList.currentItem ? theList.currentItem.fullImageUrl : ''
+
+                MouseArea {
+                    anchors.fill: parent; onClicked: fullScrenImageRect.visible = false
+                }
+            }
+
+            Behavior on width {
+                NumberAnimation { duration: 200 }
+            }
+
+            Behavior on height {
+                NumberAnimation { duration: 200 }
+            }
         }
     }
 }
+
