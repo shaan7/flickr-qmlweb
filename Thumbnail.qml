@@ -17,8 +17,9 @@ Image {
         value: delegateImage.progress
     }
 
-    MouseArea {
+    MouseAreaWithLinkMouseCursor {
         anchors.fill: parent
+        target: parent
         onClicked: delegateImage.clicked()
     }
 }

@@ -1,3 +1,5 @@
+Grid Grid.qml
+List List.qml
 FlickrModel FlickrModel.qml
 Thumbnail Thumbnail.qml
-
+MouseAreaWithLinkMouseCursor MouseAreaWithLinkMouseCursor.qml
