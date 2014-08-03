@@ -14,7 +14,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignHCenter
         QmlWeb.Hyperlink {
             Layout.minimumHeight: 256; Layout.minimumWidth: 256
-            url: 'http://localhost:8000/List.qml'
+            url: 'http://flickr.shaan7.info/List.qml'
 
             Image {
                 anchors.fill: parent; fillMode: Image.PreserveAspectFit
@@ -24,7 +24,7 @@ ColumnLayout {
 
         QmlWeb.Hyperlink {
             Layout.minimumHeight: 256; Layout.minimumWidth: 256
-            url: 'http://localhost:8000/Grid.qml'
+            url: 'http://flickr.shaan7.info/Grid.qml'
 
             Image {
                 anchors.fill: parent; fillMode: Image.PreserveAspectFit

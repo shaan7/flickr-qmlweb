@@ -52,11 +52,4 @@ GridView {
         XmlRole { name: "id"; query: "@id/string()" }
         XmlRole { name: "secret"; query: "@secret/string()" }
     }
-
-    QmlWeb.Hyperlink {
-        anchors { bottom: parent.bottom; horizontalCenter: parent.horizontalCenter }
-        text: "TODO List"
-        url: "https://raw.githubusercontent.com/shaan7/qmlweb/master/data/Todo.qml"
-    }
 }
-
