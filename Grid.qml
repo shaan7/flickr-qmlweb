@@ -8,8 +8,6 @@ GridView {
 
     signal clicked(string url)
 
-    anchors { fill: parent; margins: 10 }
-
     header: Label { text: theGrid.count + " items" }
     delegate: Image {
         property string url_without_size: "http://farm" + farm + ".static.flickr.com/" + server + "/" + id + "_" + secret
